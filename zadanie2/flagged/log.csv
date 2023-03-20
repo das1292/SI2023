@@ -1,0 +1,66 @@
+Enter file name:,Number of lines to display:,File preview:,flag,username,timestamp
+,,,,,2023-03-14 18:20:02.725353
+dane/australian.txt,123123,"File contains 690 lines.
+Liczba klas decyzyjnych: 3
+Wielkość klasy 1.234: 1
+Wielkość klasy 0: 222
+Wielkość klasy 1: 467
+",,,2023-03-14 18:27:07.582190
+dane/car.txt,50,"Plik zawiera 1728 wierszy.
+Liczba klas decyzyjnych to: 4
+Wielkość klasy vhigh to: 432
+Wielkość klasy high to: 432
+Wielkość klasy med to: 432
+Wielkość klasy low to: 432
+
+Wybrane wiersze:
+vhigh vhigh 2 2 small low unacc
+vhigh vhigh 2 2 small med unacc
+vhigh vhigh 2 2 small high unacc
+vhigh vhigh 2 2 med low unacc
+vhigh vhigh 2 2 med med unacc
+vhigh vhigh 2 2 med high unacc
+vhigh vhigh 2 2 big low unacc
+vhigh vhigh 2 2 big med unacc
+vhigh vhigh 2 2 big high unacc
+vhigh vhigh 2 4 small low unacc
+vhigh vhigh 2 4 small med unacc
+vhigh vhigh 2 4 small high unacc
+vhigh vhigh 2 4 med low unacc
+vhigh vhigh 2 4 med med unacc
+vhigh vhigh 2 4 med high unacc
+vhigh vhigh 2 4 big low unacc
+vhigh vhigh 2 4 big med unacc
+vhigh vhigh 2 4 big high unacc
+vhigh vhigh 2 more small low unacc
+vhigh vhigh 2 more small med unacc
+vhigh vhigh 2 more small high unacc
+vhigh vhigh 2 more med low unacc
+vhigh vhigh 2 more med med unacc
+vhigh vhigh 2 more med high unacc
+vhigh vhigh 2 more big low unacc
+vhigh vhigh 2 more big med unacc
+vhigh vhigh 2 more big high unacc
+vhigh vhigh 3 2 small low unacc
+vhigh vhigh 3 2 small med unacc
+vhigh vhigh 3 2 small high unacc
+vhigh vhigh 3 2 med low unacc
+vhigh vhigh 3 2 med med unacc
+vhigh vhigh 3 2 med high unacc
+vhigh vhigh 3 2 big low unacc
+vhigh vhigh 3 2 big med unacc
+vhigh vhigh 3 2 big high unacc
+vhigh vhigh 3 4 small low unacc
+vhigh vhigh 3 4 small med unacc
+vhigh vhigh 3 4 small high unacc
+vhigh vhigh 3 4 med low unacc
+vhigh vhigh 3 4 med med unacc
+vhigh vhigh 3 4 med high unacc
+vhigh vhigh 3 4 big low unacc
+vhigh vhigh 3 4 big med unacc
+vhigh vhigh 3 4 big high unacc
+vhigh vhigh 3 more small low unacc
+vhigh vhigh 3 more small med unacc
+vhigh vhigh 3 more small high unacc
+vhigh vhigh 3 more med low unacc
+vhigh vhigh 3 more med med unacc",,,2023-03-21 00:00:10.137049
