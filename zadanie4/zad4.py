@@ -42,11 +42,10 @@ def get_rules(decision_system, reduct):
 # Zadanie 1
 print("\nZadanie 1")
 decision_system1 = pd.DataFrame({
-    'a': [0, 1, 2, 0],
-    'b': [2, 2, 0, 2],
+    'b': [2, 2, 0, 1],
     'c': [1, 2, 2, 1],
     'd': [0, 1, 1, 1],
-    'dec': [0, 0, 1, 2]
+    'dec': [0, 1, 2, 1]
 })
 
 reduct1 = get_reduct(decision_system1)
