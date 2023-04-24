@@ -41,6 +41,7 @@ def get_rules(decision_system, reduct):
 
 # Zadanie 1
 print("\nZadanie 1")
+# redukt z a i d zamieniony na b i d
 decision_system1 = pd.DataFrame({
     'b': [2, 2, 0, 1],
     'c': [1, 2, 2, 1],
