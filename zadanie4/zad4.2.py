@@ -1,38 +1,36 @@
 import itertools
 
-def check_consistency(rule, examples):
-    consistent_examples = []
-    for example in examples:
-        if all(example[feature] == value for feature, value in rule):
-            consistent_examples.append(example)
-    return consistent_examples
 
-def find_rules(examples, max_rule_length):
-    num_features = len(examples[0]) - 1
-    uncovered_examples = examples.copy()
+#zad1
+def check_consistency(rules, decision_system):
+    for rule in rules:
+        for row in decision_system:
+            if all(rule[i] == row[i] for i in rule):
+                if rule[-1] != row[-1]:
+                    return False
+    return True
+
+def find_rules(decision_system):
+    attributes = len(decision_system[0]) - 1
     rules = []
 
-    for rule_length in range(1, max_rule_length + 1):
-        if not uncovered_examples:
-            break
-
-        best_rule = None
-        best_covered_examples = []
-
-        for rule in itertools.combinations(enumerate(range(num_features)), rule_length):
-            covered_examples = check_consistency(rule, uncovered_examples)
-            if len(covered_examples) > len(best_covered_examples):
-                best_rule = rule
-                best_covered_examples = covered_examples
-
-        if best_rule:
-            rules.append(best_rule)
-            for example in best_covered_examples:
-                uncovered_examples.remove(example)
+    while decision_system:
+        found = False
+        for row in decision_system:
+            for length in range(1, attributes + 1):
+                if found:
+                    break
+                for combination in itertools.combinations(range(attributes), length):
+                    rule = {i: row[i] for i in combination}
+                    rule[-1] = row[-1]
+                    if check_consistency([rule], decision_system):
+                        rules.append(rule)
+                        decision_system = [r for r in decision_system if not all(rule[i] == r[i] for i in rule)]
+                        found = True
+                        break
 
     return rules
 
-# Example decision system
 decision_system = [
     [1, 1, 1, 1, 3, 1, 1],
     [1, 1, 1, 1, 3, 2, 1],
@@ -44,9 +42,7 @@ decision_system = [
     [1, 1, 2, 2, 4, 1, 1]
 ]
 
-max_rule_length = 2
-rules = find_rules(decision_system, max_rule_length)
-
-print("Found rules:")
+rules = find_rules(decision_system)
+print("Reguły:")
 for rule in rules:
-    print(" AND ".join(f"a{feature + 1} = {value}" for feature, value in rule))
+    print(rule)
