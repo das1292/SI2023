@@ -11,54 +11,54 @@ def get_discernibility_matrix(data):
                 discernibility_matrix[i, j] = sum(data.iloc[i, :-1] != data.iloc[j, :-1])
     return discernibility_matrix
 
-def get_reduct(decision_system):
+def get_all_reducts(decision_system):
     discernibility_matrix = get_discernibility_matrix(decision_system)
     n, m = decision_system.shape
     attributes = set(range(m - 1))
-    reduct = set()
-    while attributes:
-        min_cardinality = float('inf')
-        min_element = None
-        for attr in attributes:
-            cardinality = sum(decision_system.iloc[:, attr].duplicated(keep=False))
-            if cardinality < min_cardinality:
-                min_cardinality = cardinality
-                min_element = attr
-        reduct.add(min_element)
-        attributes.remove(min_element)
-        if np.any(reduce(np.bitwise_and, discernibility_matrix[:, list(reduct)])):
-            break
-    return reduct
+    reducts = set()
 
-def get_rules(decision_system, reduct):
-    unique_rows = decision_system.iloc[:, list(reduct) + [-1]].drop_duplicates()
-    rules = []
-    for _, row in unique_rows.iterrows():
-        conditions = [f"{col} = {row[col]}" for col in reduct]
-        rule = f"Jeśli {' i '.join(conditions)}, to dec = {row['dec']}"
-        rules.append(rule)
-    return rules
+    def search_reduct(current_reduct, remaining_attributes):
+        if np.all(reduce(np.bitwise_or, discernibility_matrix[:, list(current_reduct)])):
+            reducts.add(frozenset(current_reduct))
+        for attr in remaining_attributes:
+            search_reduct(current_reduct | {attr}, remaining_attributes - {attr})
+
+    search_reduct(set(), attributes)
+    return [set(reduct) for reduct in reducts]
+
+def get_all_rules(decision_system, reducts):
+    all_rules = []
+    for reduct in reducts:
+        unique_rows = decision_system.iloc[:, list(reduct) + [-1]].drop_duplicates()
+        rules = []
+        for _, row in unique_rows.iterrows():
+            conditions = [f"{decision_system.columns[col]} = {row.at[decision_system.columns[col]]}" for col in reduct]
+            rule = f"Jeśli {' i '.join(conditions)}, to dec = {row['dec']}"
+            rules.append(rule)
+        all_rules.append(rules)
+    return all_rules
 
 # Zadanie 1
 print("\nZadanie 1")
-# redukt z a i d zamieniony na b i d
 decision_system1 = pd.DataFrame({
-    'b': [2, 2, 0, 1],
+    'a': [0, 1, 2, 0],
+    'b': [2, 2, 0, 2],
     'c': [1, 2, 2, 1],
     'd': [0, 1, 1, 1],
-    'dec': [0, 1, 2, 1]
+    'dec': [0, 0, 1, 2]
 })
 
-reduct1 = get_reduct(decision_system1)
-print(f"Redukt decyzyjny dla Fig. 1: {reduct1}")
+reducts1 = get_all_reducts(decision_system1)
+print(f"Wszystkie redukty decyzyjne dla Fig. 1: {reducts1}")
 
 # Zadanie 2
 print("\nZadanie 2")
-rules1 = get_rules(decision_system1, reduct1)
-print("\nReguły wygenerowane z otrzymanego reduktu decyzyjnego:")
-for rule in rules1:
-    print(rule)
-
+all_rules1 = get_all_rules(decision_system1, reducts1)
+print("\nWszystkie reguły wygenerowane z otrzymanych reduktów decyzyjnych:")
+for i, rules in enumerate(all_rules1):
+    print(f"Redukt {i + 1}:")
+    for rule in rules:
+        print(f"  {rule}")
 # Zadanie 3
 print("\nZadanie 3")
 decision_system2 = pd.DataFrame({
@@ -76,19 +76,18 @@ subset_A = decision_system2.loc[:, list(A) + ['dec']].drop_duplicates()
 subset_B = decision_system2.loc[:, list(B) + ['dec']].drop_duplicates()
 
 print("Opis dla X2 w odniesieniu do A:")
-for _, row in subset_A.iterrows():
-    print(f"Jeśli {X2} = {row[X2]}, to dec = {row['dec']}")
+grouped_A = subset_A.groupby(X2)["dec"].unique()
+for a2_value, dec_values in grouped_A.items():
+    print(f"Jeśli {X2} = {a2_value}, to dec =", ', '.join(dec_values))
 
 print("Opis dla X1 i X2 w odniesieniu do B:")
 for _, row in subset_B.iterrows():
     print(f"Jeśli {X1} = {row[X1]} i {X2} = {row[X2]}, to dec = {row['dec']}")
+    print("\nZadanie 4")
+    reduct2 = get_all_reducts(decision_system2)
+    print(f"Redukt decyzyjny dla Fig. 2: {reduct2}")
 
-# Zadanie 4
-print("\nZadanie 4")
-reduct2 = get_reduct(decision_system2)
-print(f"Redukt decyzyjny dla Fig. 2: {reduct2}")
-
-rules2 = get_rules(decision_system2, reduct2)
-print("Reguły wygenerowane z otrzymanego reduktu decyzyjnego dla Fig. 2:")
-for rule in rules2:
-    print(rule)
+    rules2 = get_all_rules(decision_system2, reduct2)
+    print("Reguły wygenerowane z otrzymanego reduktu decyzyjnego dla Fig. 2:")
+    for rule in rules2:
+        print(rule)
